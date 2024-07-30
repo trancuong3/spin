@@ -11,57 +11,37 @@
 	const notificationBar = $('.notification-bar');
 
 	const listGift = [
-		{
-			text: 'Hải',
-		},
-		{
-			text: 'Hạnh',
-		},
-		{
-			text: 'Khiêm',
-		},
-		{
-			text: 'Nguyên',
-		},
-		{
-			text: 'Bằng',
-		},
-		{
-			text: 'Vỹ',
-		},
-		{
-			text: 'Minh',
-		},
-		{
-			text: 'Cường',
-		},
+		{ text: 'Hải' },
+		{ text: 'Minh' },
+		{ text: 'Nguyên' },
+		{ text: 'Vỹ' },
+		{ text: 'Bằng' },
+		{ text: 'Cường' },
+		{ text: 'Hạnh' },
+		{ text: 'Khiêm' },
 	];
+
+	const sequence = [0, 6, 1, 5, 4, 3, 7, 2];
 
 	const size = listGift.length;
 	const rotate = 360 / size;
 	const skewY = 90 - rotate;
 
-	listGift.map((item, index) => {
+	listGift.forEach((item, index) => {
 		const elm = document.createElement('li');
 		elm.style.transform = `rotate(${rotate * index}deg) skewY(-${skewY}deg)`;
-		if (index % 2 == 0) {
-			elm.innerHTML = `<p style="transform: skewY(${skewY}deg) rotate(${rotate / 2}deg);" class="text text-1">
-			<b>${item.text}</b>
-		</p>`;
-		} else {
-			elm.innerHTML = `<p style="transform: skewY(${skewY}deg) rotate(${rotate / 2}deg);" class="text text-2">
-		<b>${item.text}</b>
-		</p>`;
-		}
+		elm.innerHTML = `<p style="transform: skewY(${skewY}deg) rotate(${rotate / 2}deg);" class="text text-${index % 2 === 0 ? 1 : 2}">
+                    <b>${item.text}</b>
+                </p>`;
 		wheel.appendChild(elm);
 	});
 
 	const start = () => {
 		showMsg.innerHTML = '';
 		isRotating = true;
-		const gift = listGift[currentIndex];
+		const gift = listGift[sequence[currentIndex]];
 		currentRotate += 360 * 10;
-		rotateWheel(currentRotate, currentIndex);
+		rotateWheel(currentRotate, sequence[currentIndex]);
 		showGift(gift);
 		currentIndex = (currentIndex + 1) % size;
 	};
@@ -85,6 +65,6 @@
 	};
 
 	btnWheel.addEventListener('click', () => {
-		!isRotating && start();
+		if (!isRotating) start();
 	});
 })();
